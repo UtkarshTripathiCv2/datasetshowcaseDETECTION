@@ -58,10 +58,12 @@ def filter_dataset(original_data_yaml, selected_classes, new_dataset_dir):
         # Assume labels are in a parallel directory structure
         original_label_dir = original_image_dir.replace('images', 'labels')
 
-        new_image_dir = os.path.join(new_dataset_dir, split, 'images')
-        new_label_dir = os.path.join(new_dataset_dir, split, 'labels')
+        # FIX: Ensure the output directory name is 'valid' to match the created folder
+        output_split_name = 'valid' if split == 'val' else split
+        new_image_dir = os.path.join(new_dataset_dir, output_split_name, 'images')
+        new_label_dir = os.path.join(new_dataset_dir, output_split_name, 'labels')
         
-        print(f"\nProcessing '{split}' split...")
+        print(f"\nProcessing '{yaml_split_key}' split...")
         print(f"Original labels directory: {original_label_dir}")
 
         if not os.path.isdir(original_label_dir):
@@ -145,7 +147,7 @@ if __name__ == '__main__':
     
     # 1. Define the classes you want to keep in your new dataset
     SELECTED_CLASSES = [
-        'fire', 
+ 'fire', 
         'smoke', 
         'person', 
         'COW',  # Note: Case sensitive, should match your YAML
@@ -205,3 +207,4 @@ if __name__ == '__main__':
     
     # --- Run the script ---
     filter_dataset(ORIGINAL_DATA_YAML_CONTENT, SELECTED_CLASSES, NEW_DATASET_DIRECTORY)
+
